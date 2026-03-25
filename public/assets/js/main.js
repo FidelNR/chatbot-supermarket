@@ -3,11 +3,6 @@ const inputText = document.querySelector("#inputText");
 const messageContainer = document.querySelector(".chat__messages");
 const userId = Date.now() + Math.floor(777 + Math.random() * 7000);
 
-// URL del servidor - en desarrollo usa localhost, en producción usa Railway
-const API_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000'
-    : 'https://tu-dominio-en-railway.up.railway.app';
-
 const sendMessage = async () => {
     const myMessage = inputText.value.trim();
     if (!myMessage) return;
@@ -21,7 +16,7 @@ const sendMessage = async () => {
     }, 300);
 
         try {
-        const response = await fetch(`${API_URL}/api/chatbot`, {
+        const response = await fetch("/api/chatbot", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
