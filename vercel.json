@@ -1,1 +1,7 @@
-{"functions": {"api/**/*.{js,ts}": {"maxDuration": 30,"memory": 256}}}
+{
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 30
+    }
+  }
+}

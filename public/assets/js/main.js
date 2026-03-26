@@ -24,18 +24,25 @@ const sendMessage = async () => {
 
   try {
     const response = await fetch("/api/chatbot", {
-      method: "POST",
-      headers: {
+    method: "POST",
+    headers: {
         "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
+    },
+    body: JSON.stringify({
         userId,
         threadId,
         message: myMessage
-      })
+    })
     });
 
-    const data = await response.json();
+    const rawText = await response.text();
+    let data;
+
+    try {
+        data = JSON.parse(rawText);
+    } catch {
+        throw new Error(`Respuesta no JSON del servidor: ${rawText.substring(0, 200)}`);
+    }
 
     const typingMessage = document.querySelector(".chat__message--typing");
     if (typingMessage) typingMessage.remove();
