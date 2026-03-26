@@ -1,11 +1,10 @@
 {
-  "name": "proyecto-traductor-ia",
+  "name": "chatbot-supermarket",
   "version": "1.0.0",
-  "description": "proyecto de traducciones con IA",
+  "description": "Chatbot de supermercado desplegado en Vercel",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vercel dev"
   },
   "author": "fidel nava",
   "license": "MIT",

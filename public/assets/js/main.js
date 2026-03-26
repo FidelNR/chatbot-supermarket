@@ -16,7 +16,7 @@ const sendMessage = async () => {
     }, 300);
 
         try {
-        const response = await fetch("https://chatbot-supermarket.vercel.app/api/chatbot", {
+        const response = await fetch("/api/chatbot", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
