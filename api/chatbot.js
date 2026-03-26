@@ -60,8 +60,8 @@ export default async function handler(req, res) {
 
     while(runStatus.status !== "completed" && attempts < maxAttemps) {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        runStatus = await openai.beta.threads.runs.retrieve(myAssistant.id, {
-            thread_id: threadId,
+        runStatus = await openai.beta.threads.runs.retrieve(run.id, {
+            thread_id: currentThreadId,
         });
         attempts++;
     }
