@@ -1,14 +1,1 @@
-{
-  "buildCommand": "npm install",
-  "outputDirectory": "public",
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
-    },
-    {
-      "source": "/:path*",
-      "destination": "/index.html"
-    }
-  ]
-}
+{"functions": {"api/**/*.{js,ts}": {"maxDuration": 10,"memory": 128}}}
