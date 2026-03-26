@@ -52,10 +52,18 @@ export default async function handler(req, res) {
     let attempts = 0;
     const maxAttempts = 30;
 
-    while (runStatus.status !== "completed" && attempts < maxAttempts) {
+    /*while (runStatus.status !== "completed" && attempts < maxAttempts) {
       await new Promise(resolve => setTimeout(resolve, 1000));
       runStatus = await openai.beta.threads.runs.retrieve(currentThreadId, run.id);
       attempts++;
+    }*/
+
+    while(runStatus.status !== "completed" && attempts < maxAttemps) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        runStatus = await openai.beta.threads.runs.retrieve(myAssistant.id, {
+            thread_id: threadId,
+        });
+        attempts++;
     }
 
     if (runStatus.status !== "completed") {
