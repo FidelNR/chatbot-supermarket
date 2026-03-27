@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Chatbot de supermercado desplegado en Vercel",
   "type": "module",
-  "scripts": {
-    "dev": "vercel dev"
-  },
   "author": "fidel nava",
   "license": "MIT",
   "dependencies": {

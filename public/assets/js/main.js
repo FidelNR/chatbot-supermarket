@@ -36,6 +36,7 @@ const sendMessage = async () => {
     });
 
     const rawText = await response.text();
+    console.log("Respuesta cruda del servidor:", rawText);
     let data;
 
     try {

@@ -19,7 +19,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { threadId, message } = req.body;
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
+    const { threadId, message } = body;
+
+    console.log("BODY RECIBIDO:", body);
+    console.log("threadId recibido:", threadId);
+    console.log("message recibido:", message);
 
     if (!message) {
       return res.status(400).json({ error: "Mensaje es requerido" });
@@ -29,11 +34,16 @@ export default async function handler(req, res) {
 
     if (!currentThreadId) {
       const thread = await openai.beta.threads.create();
+      console.log("THREAD CREADO:", thread);
+
       if (!thread?.id) {
         throw new Error("No se pudo obtener un thread.id válido");
       }
+
       currentThreadId = thread.id;
     }
+
+    console.log("currentThreadId final:", currentThreadId);
 
     await openai.beta.threads.messages.create(currentThreadId, {
       role: "user",
@@ -43,6 +53,8 @@ export default async function handler(req, res) {
     const run = await openai.beta.threads.runs.create(currentThreadId, {
       assistant_id: process.env.OPENAI_ASSISTANT_ID
     });
+
+    console.log("RUN CREADO:", run);
 
     if (!run?.id) {
       throw new Error("Run ID no válido");
@@ -54,16 +66,27 @@ export default async function handler(req, res) {
 
     /*while (runStatus.status !== "completed" && attempts < maxAttempts) {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      runStatus = await openai.beta.threads.runs.retrieve(currentThreadId, run.id);
-      attempts++;
-    }*/
 
-    while(runStatus.status !== "completed" && attempts < maxAttemps) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        runStatus = await openai.beta.threads.runs.retrieve(run.id, {
-            thread_id: currentThreadId,
-        });
-        attempts++;
+      if (!currentThreadId) {
+        throw new Error("currentThreadId es undefined antes de consultar el run");
+      }
+
+      runStatus = await openai.beta.threads.runs.retrieve(currentThreadId, run.id);
+      attempts++;*/
+
+        while(runStatus.status !== "completed" && attempts < maxAttempts) {
+         await new Promise(resolve => setTimeout(resolve, 1000));
+      if (!currentThreadId) {
+        throw new Error("currentThreadId es undefined antes de consultar el run");
+      }
+
+         runStatus = await openai.beta.threads.runs.retrieve(run.id, {
+             thread_id: currentThreadId,
+         });
+         attempts++;
+     
+
+      console.log(`Intento ${attempts}:`, runStatus.status);
     }
 
     if (runStatus.status !== "completed") {
